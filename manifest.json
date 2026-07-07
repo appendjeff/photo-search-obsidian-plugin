@@ -1,0 +1,9 @@
+{
+  "id": "photo-date-search",
+  "name": "Photo Date Search",
+  "version": "0.1.0",
+  "minAppVersion": "1.4.0",
+  "description": "Jump from daily notes to Google Photos or Immich searches for that date. Supports linked/backlinked daily notes.",
+  "author": "Jeff",
+  "isDesktopOnly": false
+}
