@@ -3,7 +3,14 @@
 Jump from a daily note (or any note that links to daily notes) straight to a
 Google Photos or Immich search for that date.
 
+## Dev
+```
+npm install
+npx esbuild main.ts --bundle --external:obsidian --format=cjs --outfile=main.js --target=es2018
+```
+
 ## Install (manual)
+0. Make sure you have the main.js file built (see dev instructions)
 1. Copy `main.js` and `manifest.json` into `<vault>/.obsidian/plugins/photo-date-search/`
 2. Enable "Photo Date Search" in Settings → Community plugins.
 
@@ -29,8 +36,4 @@ Google Photos or Immich search for that date.
 - Daily note date format override + extra comma-separated formats to try on
   linked note names (strict Moment parsing, so "Meeting Notes" won't false-positive)
 
-## Dev
-```
-npm install
-npx esbuild main.ts --bundle --external:obsidian --format=cjs --outfile=main.js --target=es2018
-```
+
