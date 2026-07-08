@@ -244,7 +244,8 @@ export default class PhotoDateSearchPlugin extends Plugin {
 	// --- Settings plumbing ---
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		const data = (await this.loadData()) as Partial<PhotoSearchSettings> | null;
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, data);
 	}
 	async saveSettings() {
 		await this.saveData(this.settings);
