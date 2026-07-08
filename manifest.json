@@ -1,7 +1,7 @@
 {
   "id": "photo-date-search",
   "name": "Photo Date Search",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "minAppVersion": "1.4.0",
   "description": "Jump from daily notes to your photos on Google Photos or Immich. Uses dates from your daily note to format the photo URL search.",
   "author": "Jeff Mandell",
