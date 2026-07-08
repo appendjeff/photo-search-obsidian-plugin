@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,6 +16,7 @@
   },
   "devDependencies": {
     "@types/node": "^26.1.0",
+    "builtin-modules": "^3.3.0",
     "esbuild": "^0.28.1",
     "obsidian": "^1.13.1",
     "typescript": "^6.0.3"

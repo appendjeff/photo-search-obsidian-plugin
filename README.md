@@ -12,7 +12,7 @@ https://github.com/user-attachments/assets/fab4e2d7-88f5-480f-8692-601013330875
 ## Dev
 ```
 npm install
-npx esbuild main.ts --bundle --external:obsidian --format=cjs --outfile=main.js --target=es2018
+npm run build
 ```
 
 ## Install (manual)
