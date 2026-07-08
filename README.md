@@ -1,4 +1,4 @@
-# Photo Date Search (Obsidian plugin)
+# Photo Search (Obsidian plugin)
 
 Jump from a daily note (or any note that links to daily notes) straight to a Google Photos or Immich search for that date.
 
@@ -18,7 +18,7 @@ npm run build
 ## Install (manual)
 0. Make sure you have the main.js file built (see dev instructions)
 1. Copy `main.js` and `manifest.json` into `<vault>/.obsidian/plugins/photo-date-search/`
-2. Enable "Photo Date Search" in Settings → Community plugins.
+2. Enable "Photo Search" in Settings → Community plugins.
 
 ## Commands
 - **Search photos for this note's date** — parses the active note's filename using your Daily Notes format (or an override in settings).

@@ -111,7 +111,7 @@ class ProviderPickerModal extends FuzzySuggestModal<Provider> {
 
 // ---------- Plugin ----------
 
-export default class PhotoDateSearchPlugin extends Plugin {
+export default class PhotoSearchPlugin extends Plugin {
 	settings!: PhotoSearchSettings;
 
 	async onload() {
@@ -253,7 +253,7 @@ export default class PhotoDateSearchPlugin extends Plugin {
 }
 
 class PhotoSearchSettingTab extends PluginSettingTab {
-	constructor(app: App, private plugin: PhotoDateSearchPlugin) {
+	constructor(app: App, private plugin: PhotoSearchPlugin) {
 		super(app, plugin);
 	}
 
