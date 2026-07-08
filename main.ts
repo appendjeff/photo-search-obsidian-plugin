@@ -8,6 +8,7 @@ import {
 	TFile,
 	moment,
 } from "obsidian";
+import { getDailyNoteSettings } from "obsidian-daily-notes-interface";
 
 // ---------- Settings ----------
 
@@ -119,13 +120,23 @@ export default class PhotoDateSearchPlugin extends Plugin {
 		this.addCommand({
 			id: "search-current-note-date",
 			name: "Search photos for this note's date",
-			callback: () => this.searchCurrentNote(),
+			checkCallback: (checking) => {
+				const file = this.app.workspace.getActiveFile();
+				if (!file) return false;
+				if (!checking) this.searchCurrentNote(file);
+				return true;
+			},
 		});
 
 		this.addCommand({
 			id: "search-dates-in-note",
 			name: "Search photos for a date mentioned in this note (links + backlinks)",
-			callback: () => this.searchDatesInNote(),
+			checkCallback: (checking) => {
+				const file = this.app.workspace.getActiveFile();
+				if (!file) return false;
+				if (!checking) this.searchDatesInNote(file);
+				return true;
+			},
 		});
 
 		this.addSettingTab(new PhotoSearchSettingTab(this.app, this));
@@ -133,10 +144,7 @@ export default class PhotoDateSearchPlugin extends Plugin {
 
 	// --- Commands ---
 
-	private searchCurrentNote() {
-		const file = this.app.workspace.getActiveFile();
-		if (!file) return void new Notice("No active note.");
-
+	private searchCurrentNote(file: TFile) {
 		const date = this.parseDate(file.basename);
 		if (!date) {
 			return void new Notice(
@@ -146,10 +154,7 @@ export default class PhotoDateSearchPlugin extends Plugin {
 		this.openForDate(date);
 	}
 
-	private searchDatesInNote() {
-		const file = this.app.workspace.getActiveFile();
-		if (!file) return void new Notice("No active note.");
-
+	private searchDatesInNote(file: TFile) {
 		const refs: DatedRef[] = [];
 
 		// The note itself, if it's a daily note
@@ -171,19 +176,12 @@ export default class PhotoDateSearchPlugin extends Plugin {
 			if (d) refs.push({ date: d, source: `link → ${base}` });
 		}
 
-		// Backlinks: daily notes that link *to* this note
-		// getBacklinksForFile is not in the public typings but is stable in practice.
-		const backlinks = (this.app.metadataCache as any).getBacklinksForFile?.(file);
-		if (backlinks?.data) {
-			const keys: string[] =
-				typeof backlinks.data.keys === "function"
-					? [...backlinks.data.keys()]
-					: Object.keys(backlinks.data);
-			for (const path of keys) {
-				const base = path.split("/").pop()?.replace(/\.md$/, "") ?? path;
-				const d = this.parseDate(base);
-				if (d) refs.push({ date: d, source: `backlink ← ${base}` });
-			}
+		// Backlinks: notes that link *to* this note (public API)
+		for (const [sourcePath, dests] of Object.entries(this.app.metadataCache.resolvedLinks)) {
+			if (!(file.path in dests)) continue;
+			const base = sourcePath.split("/").pop()?.replace(/\.md$/, "") ?? sourcePath;
+			const d = this.parseDate(base);
+			if (d) refs.push({ date: d, source: `backlink ← ${base}` });
 		}
 
 		const unique = dedupe(refs);
@@ -235,9 +233,12 @@ export default class PhotoDateSearchPlugin extends Plugin {
 	}
 
 	private dailyNotesFormat(): string {
-		// Read the core Daily Notes plugin's configured format
-		const dn = (this.app as any).internalPlugins?.getPluginById?.("daily-notes");
-		return dn?.instance?.options?.format || "YYYY-MM-DD";
+		// Reads the core Daily Notes (or Periodic Notes) plugin's configured format
+		try {
+			return getDailyNoteSettings().format || "YYYY-MM-DD";
+		} catch {
+			return "YYYY-MM-DD";
+		}
 	}
 
 	// --- Settings plumbing ---
