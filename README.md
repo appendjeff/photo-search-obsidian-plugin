@@ -15,6 +15,11 @@ npm install
 npm run build
 ```
 
+## Install ("official" plugin)
+- Search for "Photo Search" in the obsidian community plugin registry
+- Here's a [direct link to the community plugin](https://community.obsidian.md/account/plugins/photo-date-search)
+
+
 ## Install (manual)
 0. Make sure you have the main.js file built (see dev instructions)
 1. Copy `main.js` and `manifest.json` into `<vault>/.obsidian/plugins/photo-date-search/`
